@@ -1,70 +1,41 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 #include <sys/stat.h>
-#include "shsort.h"
+#include "text_writer.h"
+#include "struct.h"
+#include "number_str.h"
+#include "buf_to_struct.h"
 
-void text_reader()
+void text_reader(FILE* stream)
 {
-    FILE *input_file = fopen("files_txt/text.txt", "r"); //assert на адресс
-
-    if (input_file == NULL)
+    if (stream == NULL)
     {
-        printf("Ошибка открытия входного файла!\n"); //perror
-        exit(1);
+        perror("Ошибка открытия входного файла!\n");
+        return;
     }
-
-    struct stat file_info;
-
-    size_t capacity = file_info.st_size;
-
-    char* buffer = (char*)calloc(capacity, sizeof(char));
-    const char** arr_ptr = (const char**)calloc(capacity, sizeof(char*));
-
-    fread(buffer, sizeof(char), capacity, input_file);
-
-    size_t counter = 1;
-    arr_ptr[0] = buffer;
     
-    for (size_t i = 0; i < capacity - 1; ++i)
+    struct stat file_info = {};
+
+    if (fstat(fileno(stream), &file_info) != 0)
     {
-        if (buffer[i] == '\n' && buffer[i + 1] != '\n')
-        {
-            arr_ptr[counter] = &(buffer[i + 1]);
-            buffer[i] = '\0';
-            counter++;
-        }
-        else if (buffer[i] == '\n')
-            buffer[i] = '\0';
+        perror("Ошибка получения информации о файле!\n");
+        fclose(stream);
+        return;
     }
 
-    shsort(arr_ptr, counter);
+    char* buffer = (char*)calloc((size_t)file_info.st_size + 1, sizeof(char));
 
-    // for(int i = 0; i < counter; ++i)
-    //     printf("%s\n", arr_ptr[i]);
+    size_t capacity = fread(buffer, sizeof(char), (size_t)file_info.st_size, stream);
+    size_t count_n = number_str(buffer);
 
-    FILE *output_file = fopen("files_txt/out.txt", "w"); //assert на адресс
-    
-    if (output_file == NULL)
-    {
-        printf("Ошибка создания выходного файла!\n"); //perror
-        exit(1);
-    } 
-    else
-    {
-        for(size_t i = 0; i < counter; ++i)
-            fprintf(output_file, "%s\n", arr_ptr[i]);
-    }
+    struct strings* text = (struct strings*)calloc(count_n, sizeof(char*));
+    buf_to_struct(text, buffer, capacity);
 
+    text_writer(text, buffer, &count_n);
 
-    fclose(input_file);
-    fclose(output_file);
+    fclose(stream);
     free(buffer);
-    free(arr_ptr);
-}
-
-int main()
-{
-    text_reader();
-
-    return 0;
+    free(text);
 }

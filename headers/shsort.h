@@ -1,6 +1,8 @@
 #ifndef SHSORT_H
 #define SHSORT_H
 
-void shsort(const char** a, const size_t size_a);
+#include "struct.h"
+
+void shsort(struct strings* text, const size_t* len_array, int (*my_strcmp)(const void *a1, const void *a2));
 
 #endif

@@ -3,4 +3,4 @@ FlAGS = -I./headers -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Wc++
 #make export
 
 all:
-	g++ $(FLAGS) text_reader.cpp sheyker_sort.cpp my_strcmp.cpp my_strlenn.cpp -I./headers -lm -o output
+	g++ $(FLAGS) buf_to_struct.cpp main.cpp my_strcmp.cpp number_str.cpp replace.cpp shaker_sort.cpp text_reader.cpp text_writer.cpp -I./headers -lm -o output
