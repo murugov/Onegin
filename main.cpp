@@ -1,11 +1,15 @@
 #include <stdio.h>
 #include "text_reader.h"
+#include "print_verdict.h"
 
 int main()
 {
-    FILE *input_file = fopen("files_txt/text.txt", "r");
+    FILE *input_file = fopen("files_txt/onegin.txt", "r");
 
-    text_reader(input_file);
+    res_t result = text_reader(input_file);
 
+    print_verdict(result);
+
+    fclose(input_file);
     return 0;
 }

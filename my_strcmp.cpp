@@ -4,8 +4,6 @@
 #include "my_strcmp.h"
 #include "struct.h"
 
-//int my_strcmp(struct strings* str1, struct strings* str2)
-
 int my_strcmp(const void *a1, const void *a2)
 {
     struct strings* str1 = (struct strings*)a1;
@@ -49,8 +47,6 @@ int my_strcmp(const void *a1, const void *a2)
     
     return 0;
 }
-
-//int my_rvs_strcmp(struct strings* str1, struct strings* str2)
 
 int my_rvs_strcmp(const void *a1, const void *a2)
 {

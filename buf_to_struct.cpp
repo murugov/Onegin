@@ -12,6 +12,7 @@ void buf_to_struct(struct strings* text, char* buffer, size_t capacity)
     {
         if (flag_second_n + 1 == str)
             flag_second_n++;
+
         else
         {
             *str = '\0';

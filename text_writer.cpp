@@ -3,40 +3,39 @@
 #include "shsort.h"
 #include "my_strcmp.h"
 #include "struct.h"
-#include "replace.h"
+#include "replace_0_to_n.h"
 
-void text_writer(struct strings* text, char* buffer, size_t* count_n)
+res_t text_writer(struct strings* text, char* buffer, size_t* count_n)
 {
     FILE *output_file = fopen("files_txt/out.txt", "w");
     
     if (output_file == NULL)
-    {
-        perror("Ошибка создания выходного файла!\n");
-        return;
-    } 
+        return OUT_FAIL;
+
     else
     {
-        //qsort(text, *count_n, sizeof(strings), my_strcmp);
-
-        shsort(text, count_n, my_strcmp);
+        qsort(text, *count_n, sizeof(strings), my_strcmp);
+        // shsort(text, *count_n, sizeof(strings), my_strcmp);
 
         for(size_t i = 0; i < *count_n; ++i)
             fprintf(output_file, "%s\n", text[i].ptr);
         
-        fprintf(output_file, "-----------------------------------------------------------------------------------------------------------------------------\n");
+        fprintf(output_file, "\n\n####################################################################################################################################\n\n\n");
 
-
-        shsort(text, count_n, my_rvs_strcmp);
+        // qsort(text, *count_n, sizeof(strings), my_rvs_strcmp);
+        shsort(text, *count_n, sizeof(strings), my_rvs_strcmp);
 
         for(size_t i = 0; i < *count_n; ++i)
             fprintf(output_file, "%s\n", text[i].ptr);
 
-        fprintf(output_file, "-----------------------------------------------------------------------------------------------------------------------------\n");
+        fprintf(output_file, "\n\n####################################################################################################################################\n\n\n");
         
-        replace_n_to_0(buffer, *count_n);
+        replace_0_to_n(buffer, *count_n);
 
         fputs(buffer, output_file);
     }
     
     fclose(output_file);
+
+    return SUCCESS;
 }

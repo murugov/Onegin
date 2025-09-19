@@ -11,6 +11,7 @@ size_t number_str(char* buffer)
     {
         if (flag_second_n + 1 == str)
             flag_second_n++;
+
         else
         {
             count_n++;

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void replace_n_to_0(char* buffer, size_t count_n)
+void replace_0_to_n(char* buffer, size_t count_n)
 {
     char* str = buffer;
 
